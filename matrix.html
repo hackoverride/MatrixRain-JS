@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- The code is based off geeks hub youtube tutorial, corrected some typos and changed to my preference. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Matrix Rain</title> 
+        <style>
+            * {margin:0; padding:0;}
+            body {background:black;}
+            canvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+                display: block;
+                z-index:-1;
+            }
+            div {
+                position: center, absolute;
+                z-index:1;
+                background: #1f81f7;
+                margin-top: 100px;
+                margin-left: 50px;
+                width: 400px;
+                left: 0;
+                color: black;
+                border: 1px, solid;
+                            
+            }
+            
+            #links {
+                z-index: 2;
+                margin-top: 200px;
+                margin-left: 300px;
+                border-color: white;
+                border: 3px;
+                
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="c"></canvas>
+        
+        <div><p>"Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live"</p></div>
+
+        <script>
+            var c = document.getElementById("c");
+            var ctx = c.getContext("2d");
+            
+            c.height = window.innerHeight; //setter størrelsen på animasjonen
+            c.width = window.innerWidth;
+            
+            var matrix ="Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live";
+            
+            matrix = matrix.split(""); //tar teksten over til enkle karakterer.
+            
+            var font_size = 10;
+            var columns = c.width/font_size;
+            
+            var drops = [];
+            
+            for (var x = 0; x < columns; x++)
+                drops[x] = 1; //lager drops til antall columns.
+            
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; //siste tallet setter hvor raskt teksten forsvinner (tail) 0.09 forsvinner veldig raskt, mindre tall forsvinner saktere.
+                ctx.fillRect(0,0, c.width, c.height);
+                
+                ctx.fillStyle = "#1f81f7";  //Setter fargen. ( #0F0 = matrix-grønn)
+                ctx.font = font_size + "px arial";
+                
+                for (var i = 0; i < drops.length; i++) {
+                    var text = matrix[Math.floor(Math.random()*matrix.length)];
+                    ctx.fillText(text, i*font_size, drops[i]*font_size);
+                    if(drops[i]*font_size > c.height && Math.random() > 0.975) // her sjekker vi om dråpen har kommet ned og bruker Math.random for å sende den tilbake til toppen.
+                        drops[i] = 0;
+                    
+                    drops[i]++;
+                }
+            }
+            setInterval(draw, 38); // høyere tall gjør at det dropper karakterene saktere. anbefaler 30- 40.
+
+        </script>
+    </body>
+</html>
